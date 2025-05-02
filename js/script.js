@@ -16,6 +16,8 @@
 // Risoluzione
 /**
  * 1. Costruire la pagina con elementi basilari e generare i primi 5 numeri casuali e stampare in pagina, successivamente far sparire la prima parte del gioco lasciando solamente la seconda.
+ * 2. Raccogliere i dati del form
+ * 3. Scrivere una funzione che confronta i numeri inseriti con l'array di numeri generato e salva su un contatore quanti sono presenti.
  */
 
 
@@ -33,16 +35,16 @@ console.log(bottone)
 
 // Risoluzione
 // Funzione per generare i 5 numeri random e unici
-function random (){
+function random() {
     let randomArray = [Math.floor((Math.random() * 99) + 1)]
 
-for (let i = 1; randomArray.length < 5; i++) {
-    curElem = Math.floor(Math.random() * 99 + 1)
-    if(!(randomArray.includes(curElem))){
-        randomArray.push(curElem)
+    for (let i = 1; randomArray.length < 5; i++) {
+        curElem = Math.floor(Math.random() * 99 + 1)
+        if (!(randomArray.includes(curElem))) {
+            randomArray.push(curElem)
+        }
     }
-}
-return randomArray
+    return randomArray
 }
 
 nRandom = random()
@@ -51,16 +53,90 @@ console.log(nRandom)
 
 // Stampa in pagina dei 5 numeri random
 let listItem = ""
-for(i = 0; i < nRandom.length; i++){
+for (i = 0; i < nRandom.length; i++) {
     curElem = nRandom[i]
     listItem += `<li>${curElem}</li>`
 }
 mainList.innerHTML = listItem
 
 
-setTimeout(function(){
+setTimeout(function () {
     mainList.classList.add("d-none")
 }, 3000)
+
+
+// Seconda parte
+// Raccolta dati
+const formElemnt = document.getElementById("numeri-form")
+const btnSubmit = document.getElementById("submit")
+const n1Element = document.getElementById("n1")
+const n2Element = document.getElementById("n2")
+const n3Element = document.getElementById("n3")
+const n4Element = document.getElementById("n4")
+const n5Element = document.getElementById("n5")
+const risultato = document.getElementById("risultato")
+
+console.log(n1Element, n2Element, n3Element, n4Element, n5Element)
+
+
+formElemnt.addEventListener("submit", function () {
+    event.preventDefault()
+    let n1Number = parseInt(n1Element.value)
+    console.log(n1Number)
+    let n2Number = parseInt(n2Element.value)
+    console.log(n2Number)
+    let n3Number = parseInt(n3Element.value)
+    console.log(n3Number)
+    let n4Number = parseInt(n4Element.value)
+    console.log(n4Number)
+    let n5Number = parseInt(n5Element.value)
+    console.log(n5Number)
+
+    let counter = 0
+
+    if (nRandom.includes(n1Number)) {
+        counter = counter + 1
+    }if(nRandom.includes(n2Number) && n2Number!==n1Number){
+        counter = counter + 1
+    }if(nRandom.includes(n3Number) && n3Number!==n1Number && n3Number!==n2Number){
+        counter = counter + 1
+    }if(nRandom.includes(n4Number) && n4Number!==n1Number && n4Number!==n2Number && n4Number!==n3Number){
+        counter = counter + 1
+    }if(nRandom.includes(n5Number) && n5Number!==n1Number && n5Number!==n2Number && n5Number!==n3Number && n5Number!==n4Number ){
+        counter = counter + 1
+    }
+
+    risultato.innerHTML = `Complimenti hai indovinato ${counter} numeri`
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
