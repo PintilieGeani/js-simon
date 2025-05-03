@@ -11,12 +11,13 @@
         <div class="container">
             
             <div class= "justify-content-center pt-5" id="header">
-                <h2>Generare 5 numeri casuali</h2>
-              <ul class="d-flex gap-5 list-unstyled " id="lista-principale">
+                <h2>Ti farò vedere 5 numeri per 3 secondi e tu dovrai dirmi quali di questi ricordi.</h2>
+                <h3>Pronto per cominciare?</h3>
+              <ul class="d-flex gap-5 list-unstyled d-none " id="lista-principale">
               </ul>
               <button id="bottone">Iniziamo</button>
             </div>
-            <div id="inserimento">
+            <div id="inserimento" class="d-none">
                 <form action="" id="numeri-form">
                     <h2>Inserirsci i numeri che ricordi</h2>
                     <label for="n1">Primo numero</label>
@@ -32,9 +33,10 @@
                     <button id="submit">Submit</button>
                 </form>
             </div>
-            <div id="risultato">
+            <div id="footer" class="d-none">
                 <h2>Risultato</h2>
-                <p></p>
+                <p id="risultato"></p>
+                <button type="button" id="resetta">Ricominciamo</button>
             </div>
         </div>
     </main>

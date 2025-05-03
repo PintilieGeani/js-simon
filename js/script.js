@@ -32,37 +32,80 @@ let mainList = document.getElementById("lista-principale")
 console.log(mainList)
 const bottone = document.getElementById("bottone")
 console.log(bottone)
-
+const inserimento = document.getElementById("inserimento")
+const header = document.getElementById("header")
+const refresh = document.getElementById("resetta")
+const footer = document.getElementById("footer")
 // Risoluzione
 // Funzione per generare i 5 numeri random e unici
-function random() {
-    let randomArray = [Math.floor((Math.random() * 99) + 1)]
+// function random() {
+//     let randomArray = [Math.floor((Math.random() * 99) + 1)]
 
-    for (let i = 1; randomArray.length < 5; i++) {
-        curElem = Math.floor(Math.random() * 99 + 1)
-        if (!(randomArray.includes(curElem))) {
-            randomArray.push(curElem)
+//     for (let i = 1; randomArray.length < 5; i++) {
+//         curElem = Math.floor(Math.random() * 99 + 1)
+//         if (!(randomArray.includes(curElem))) {
+//             randomArray.push(curElem)
+//         }
+//     }
+//     return randomArray
+// }
+
+// nRandom = random()
+// console.log(nRandom)
+
+
+// // Stampa in pagina dei 5 numeri random
+// let listItem = ""
+// for (i = 0; i < nRandom.length; i++) {
+//     curElem = nRandom[i]
+//     listItem += `<li>${curElem}</li>`
+// }
+// mainList.innerHTML = listItem
+
+
+// setTimeout(function () {
+//     mainList.classList.add("d-none")
+// }, 3000)
+
+
+// Funzione in bottone
+
+bottone.addEventListener("click", function () {
+    mainList.classList.remove("d-none")
+    function random() {
+        let randomArray = [Math.floor((Math.random() * 99) + 1)]
+
+        for (let i = 1; randomArray.length < 5; i++) {
+            curElem = Math.floor(Math.random() * 99 + 1)
+            if (!(randomArray.includes(curElem))) {
+                randomArray.push(curElem)
+            }
         }
+        return randomArray
     }
-    return randomArray
-}
 
-nRandom = random()
-console.log(nRandom)
+    nRandom = random()
+    console.log(nRandom)
 
 
-// Stampa in pagina dei 5 numeri random
-let listItem = ""
-for (i = 0; i < nRandom.length; i++) {
-    curElem = nRandom[i]
-    listItem += `<li>${curElem}</li>`
-}
-mainList.innerHTML = listItem
+    // Stampa in pagina dei 5 numeri random
+    let listItem = ""
+    for (i = 0; i < nRandom.length; i++) {
+        curElem = nRandom[i]
+        listItem += `<li>${curElem}</li>`
+    }
+    mainList.innerHTML = listItem
+
+    setTimeout(function () {
+        mainList.classList.add("d-none")
+        bottone.classList.add("d-none")
+        inserimento.classList.remove("d-none")
+        header.classList.add("d-none")
+    }, 3000)
+
+})
 
 
-setTimeout(function () {
-    mainList.classList.add("d-none")
-}, 3000)
 
 
 // Seconda parte
@@ -79,35 +122,64 @@ const risultato = document.getElementById("risultato")
 console.log(n1Element, n2Element, n3Element, n4Element, n5Element)
 
 
+
+// Submit 
 formElemnt.addEventListener("submit", function () {
-    event.preventDefault()
+    event.preventDefault() // Per impedire che la pagina si ricarichi
+    let controlSet = new Set([]) //Creiamo un nuovo set per evitare valori ripetuti
     let n1Number = parseInt(n1Element.value)
     console.log(n1Number)
+    controlSet.add(n1Number) // Aggingiamo il numero inserito al set
     let n2Number = parseInt(n2Element.value)
     console.log(n2Number)
+    controlSet.add(n2Number)  // Aggingiamo il numero inserito al set
     let n3Number = parseInt(n3Element.value)
     console.log(n3Number)
+    controlSet.add(n3Number)  // Aggingiamo il numero inserito al set
     let n4Number = parseInt(n4Element.value)
     console.log(n4Number)
+    controlSet.add(n4Number)  // Aggingiamo il numero inserito al set
     let n5Number = parseInt(n5Element.value)
     console.log(n5Number)
+    controlSet.add(n5Number)  // Aggingiamo il numero inserito al set
+    console.log(controlSet)
 
-    let counter = 0
+    let controlArr = Array.from(controlSet) // Dato che il set mi ritorna un oggetto allora usiamo Array.from() per ottenere un array che possiamo usare nel ciclo for
+    console.log(controlArr)
 
-    if (nRandom.includes(n1Number)) {
-        counter = counter + 1
-    }if(nRandom.includes(n2Number) && n2Number!==n1Number){
-        counter = counter + 1
-    }if(nRandom.includes(n3Number) && n3Number!==n1Number && n3Number!==n2Number){
-        counter = counter + 1
-    }if(nRandom.includes(n4Number) && n4Number!==n1Number && n4Number!==n2Number && n4Number!==n3Number){
-        counter = counter + 1
-    }if(nRandom.includes(n5Number) && n5Number!==n1Number && n5Number!==n2Number && n5Number!==n3Number && n5Number!==n4Number ){
-        counter = counter + 1
+    let counter = 0 // Variabile di appoggio per il ciclo for per contare i numeri indovinati
+    let indovinati = []
+
+
+    for (i = 0; i < controlArr.length; i++) { // Creiamo un ciclo for che scorre l'array di numeri inseriti e ad ogni elemento lo confronta con l'array di numeri random, per ogni numero trovato aumenta il counter di 1
+        curElem = controlArr[i]
+        console.log(curElem)
+        if (nRandom.includes(curElem)) {
+            counter = counter + 1
+            indovinati.push(curElem)
+        }
+    }
+    console.log(counter)
+
+    // Condizioni per il risultato
+    if (counter === 0) {
+        risultato.innerHTML = `Non ti stai neanche impegnando, eh!`
+    }else if (counter === 1) {
+        risultato.innerHTML = `Scarso! Hai indovinato solo un numero! ${indovinati}`
+    } else if (counter > 1 && counter <= 3) {
+        risultato.innerHTML = `Può andare! Hai indovinato (${counter} numeri! ${indovinati.join(", ")})`
+    } else {
+        risultato.innerHTML = `Complimenti! Hai indovinato ${counter} numeri! (${indovinati.join(", ")})`
     }
 
-    risultato.innerHTML = `Complimenti hai indovinato ${counter} numeri`
+    formElemnt.reset()
 
+    footer.classList.remove("d-none")
+    inserimento.classList.add("d-none")
+})
+
+refresh.addEventListener("click", function(){
+    window.location.reload()
 })
 
 
@@ -117,6 +189,23 @@ formElemnt.addEventListener("submit", function () {
 
 
 
+
+
+
+
+
+// Soluzioni alternative
+// if (nRandom.includes(n1Number)) {
+//     counter = counter + 1
+// }if(nRandom.includes(n2Number) && n2Number!==n1Number){
+//     counter = counter + 1
+// }if(nRandom.includes(n3Number) && n3Number!==n1Number && n3Number!==n2Number){
+//     counter = counter + 1
+// }if(nRandom.includes(n4Number) && n4Number!==n1Number && n4Number!==n2Number && n4Number!==n3Number){
+//     counter = counter + 1
+// }if(nRandom.includes(n5Number) && n5Number!==n1Number && n5Number!==n2Number && n5Number!==n3Number && n5Number!==n4Number ){
+//     counter = counter + 1
+// }
 
 
 
